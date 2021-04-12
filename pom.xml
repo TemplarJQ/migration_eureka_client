@@ -98,12 +98,12 @@
           <version>18.0</version>
       </dependency>
 
-      <!-- guava -->
-
+      <!-- lombok -->
       <dependency>
-          <groupId>com.google.guava</groupId>
-          <artifactId>guava</artifactId>
-          <version>18.0</version>
+          <groupId>org.projectlombok</groupId>
+          <artifactId>lombok</artifactId>
+          <version>1.18.12</version>
+          <scope>provided</scope>
       </dependency>
 
       <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
@@ -117,14 +117,12 @@
           <artifactId>commons-lang3</artifactId>
           <version>3.8.1</version>
       </dependency>
-
-      <!-- lombok -->
       <dependency>
           <groupId>org.projectlombok</groupId>
           <artifactId>lombok</artifactId>
-          <version>1.18.12</version>
-          <scope>provided</scope>
+          <version>1.18.6</version>
       </dependency>
+
 
   </dependencies>
 
