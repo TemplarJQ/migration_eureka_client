@@ -10,6 +10,7 @@ public class UserCheckinServiceImpl implements UserCheckinService {
 
     @Override
     public CommonReturnType userRegister(VisiterDO visiterDO) {
+        //调用RPC注册
         return null;
     }
 
