@@ -23,4 +23,14 @@ public class UserCheckinServiceImpl implements UserCheckinService {
     public RPCReturnType userCheckinRPCWay(String userId, String password) {
         return null;
     }
+
+    @Override
+    public RPCReturnType adminRegister(VisiterDO visiterDO) {
+        return null;
+    }
+
+    @Override
+    public RPCReturnType adminCheckinRPCWay(String adminId, String password) {
+        return null;
+    }
 }

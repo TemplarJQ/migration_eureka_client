@@ -20,6 +20,7 @@ public class UserConstants {
     public static final String BY_SERVER = "server";
     public static final String BY_OTHERS = "others";
 
+
     public static String getRegisterMode(String registerMode) {
         if(registerMode.equals(BY_PHONE)) return BY_PHONE;
         else if (registerMode.equals(BY_PC)) return BY_PC;

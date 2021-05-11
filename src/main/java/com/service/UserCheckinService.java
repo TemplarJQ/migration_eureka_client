@@ -11,4 +11,8 @@ public interface UserCheckinService {
     CommonReturnType userCheckinLocally(String userId, String password);
 
     RPCReturnType userCheckinRPCWay(String userId, String password);
+
+    RPCReturnType adminRegister(VisiterDO visiterDO);
+
+    RPCReturnType adminCheckinRPCWay(String adminId, String password);
 }
