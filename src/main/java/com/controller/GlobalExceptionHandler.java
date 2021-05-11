@@ -12,6 +12,8 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,6 +35,12 @@ public class GlobalExceptionHandler{
 
             responseData.put("errCode", SystemError.UNKNOWN_ERROR.getErrCode());
             responseData.put("errMsg","url绑定路由问题");
+
+        } else if ( ex instanceof UnsupportedEncodingException
+                || ex instanceof NoSuchAlgorithmException) {
+
+            responseData.put("errCode", SystemError.UNKNOWN_ERROR.getErrCode());
+            responseData.put("errMsg","MD5加密算法错误");
 
         } else if ( ex instanceof NoHandlerFoundException){
 

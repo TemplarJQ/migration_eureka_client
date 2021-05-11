@@ -2,12 +2,13 @@ package com.service;
 
 import com.dataobject.VisiterDO;
 import com.response.CommonReturnType;
+import com.response.RPCReturnType;
 
 public interface UserCheckinService {
 
-    CommonReturnType userRegister(VisiterDO visiterDO);
+    RPCReturnType userRegister(VisiterDO visiterDO);
 
-    CommonReturnType userCheckinLocally(Integer userId);
+    CommonReturnType userCheckinLocally(String userId, String password);
 
-    CommonReturnType userCheckinRPCWay(Integer userId);
+    RPCReturnType userCheckinRPCWay(String userId, String password);
 }
