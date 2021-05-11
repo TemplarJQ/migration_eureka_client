@@ -1,22 +1,21 @@
 package com.error;
 
-public enum EmBusinessError implements CommonError {
+public enum UserError implements CommonError {
 
     //通用错误类型10001，解决入参校验
     PARAMETER_VALIDATION_ERROR(10001, "参数不合法"),
     //未知错误
     UNKNOWN_ERROR(10002, "未知错误"),
 
-    //20000开头表示为用户信息相关定义错误
-    USER_NOT_EXIST(20001, "用户不存在"),
-    USER_LOGIN_FAIL(20002,"手机或密码不存在"),
-    USER_NOT_LOGIN(20003,"用户还未登陆"),
+    //20000开头表示为用户信息相关错误
+    USER_LOGIN_FAIL(20001, "用户验证失败"),
+    USER_IN_BLACKLIST(20002,"用户黑名单中，请一段时间后再发起任务"),
 
-    //30000开头表示交易信息错误定义
-    STOCK_NOT_ENOUGH(30001, "库存不足")
+    //30000开头表示任务相关错误
+    TASK_SEND_ERROR(30001, "任务发送失败")
     ;
 
-    EmBusinessError(int errCode, String errMsg) {
+    UserError(int errCode, String errMsg) {
         this.errCode = errCode;
         this.errMsg = errMsg;
     }
