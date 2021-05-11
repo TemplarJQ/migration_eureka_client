@@ -13,6 +13,7 @@ public class CacheServiceImpl implements CacheService {
 
     private Cache<String, Object> commonCache = null;
 
+    //本地缓存服务及其实现，针对大访问场景选择开启，压测实验等
     @PostConstruct
     public void init(){
         commonCache = CacheBuilder.newBuilder()

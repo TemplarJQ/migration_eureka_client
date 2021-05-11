@@ -2,7 +2,7 @@ package com.controller;
 
 
 import com.error.BusinessException;
-import com.error.EmBusinessError;
+import com.error.SystemError;
 import com.response.CommonReturnType;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -26,23 +26,23 @@ public class GlobalExceptionHandler{
         if( ex instanceof BusinessException){
 
             BusinessException businessException = (BusinessException)ex;
-            responseData.put("errCode",businessException.getErrCode());
-            responseData.put("errMsg",businessException.getErrMsg());
+            responseData.put("errCode", businessException.getErrCode());
+            responseData.put("errMsg", businessException.getErrMsg());
 
-        }else if(ex instanceof ServletRequestBindingException){
+        } else if ( ex instanceof ServletRequestBindingException){
 
-            responseData.put("errCode", EmBusinessError.UNKNOWN_ERROR.getErrCode());
+            responseData.put("errCode", SystemError.UNKNOWN_ERROR.getErrCode());
             responseData.put("errMsg","url绑定路由问题");
 
-        }else if(ex instanceof NoHandlerFoundException){
+        } else if ( ex instanceof NoHandlerFoundException){
 
-            responseData.put("errCode",EmBusinessError.UNKNOWN_ERROR.getErrCode());
+            responseData.put("errCode", SystemError.UNKNOWN_ERROR.getErrCode());
             responseData.put("errMsg","对应的访问路径无法找到");
 
-        }else{
+        } else {
 
-            responseData.put("errCode", EmBusinessError.UNKNOWN_ERROR.getErrCode());
-            responseData.put("errMsg",EmBusinessError.UNKNOWN_ERROR.getErrMsg());
+            responseData.put("errCode", SystemError.UNKNOWN_ERROR.getErrCode());
+            responseData.put("errMsg", SystemError.UNKNOWN_ERROR.getErrMsg());
 
         }
         return CommonReturnType.create(responseData,"fail");

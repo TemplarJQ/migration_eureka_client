@@ -1,6 +1,6 @@
 package com.response;
 
-public class CommonReturnType {
+public class RPCReturnType {
 
     //处理结果有"success"和"fail"
 
@@ -10,14 +10,14 @@ public class CommonReturnType {
     private Object data;
 
     //默认返回成功
-    public static CommonReturnType create(Object object){
-        return CommonReturnType.create(object, "success");
+    public static RPCReturnType create(Object object){
+        return RPCReturnType.create(object, "success");
     }
 
     //否则返回失败
-    public static CommonReturnType create(Object object, String status){
+    public static RPCReturnType create(Object object, String status){
 
-        CommonReturnType type = new CommonReturnType();
+        RPCReturnType type = new RPCReturnType();
         type.setData(object);
         type.setStatus(status);
         return type;
