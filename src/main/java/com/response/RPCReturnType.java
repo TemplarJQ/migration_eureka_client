@@ -1,42 +1,31 @@
 package com.response;
 
-public class RPCReturnType {
+public class RPCReturnType extends CommonReturnType {
 
-    //处理结果有"success"和"fail"
-
-    //若返回值为success则data内产生前端需要的json数据
-    //若返回值为fail，则返回data内通用的错误码格式
-    private String status;
-    private Object data;
+    //异常信息等便于日志调用
+    private String msg;
 
     //默认返回成功
     public static RPCReturnType create(Object object){
-        return RPCReturnType.create(object, "success");
+        return RPCReturnType.create(object, "success", "rpc call");
     }
 
     //否则返回失败
-    public static RPCReturnType create(Object object, String status){
+    public static RPCReturnType create(Object object, String status, String msg){
 
         RPCReturnType type = new RPCReturnType();
         type.setData(object);
         type.setStatus(status);
+        type.setMsg(msg);
         return type;
 
     }
 
-    public String getStatus() {
-        return status;
+    public String getMsg() {
+        return msg;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Object getData() {
-        return data;
-    }
-
-    public void setData(Object data) {
-        this.data = data;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 }

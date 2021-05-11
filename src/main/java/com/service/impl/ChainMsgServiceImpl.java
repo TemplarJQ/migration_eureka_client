@@ -5,15 +5,22 @@ import com.response.CommonReturnType;
 import com.response.RPCReturnType;
 import com.service.ChainMsgService;
 
+import java.util.List;
+
 public class ChainMsgServiceImpl implements ChainMsgService {
 
     @Override
-    public RPCReturnType getUserChainMsgPRCWay(String chainNum) {
+    public List<String> getAllChainMsgByUserId(String userId) {
         return null;
     }
 
     @Override
-    public CommonReturnType getUserChainMsgLocally(String chainNum) {
+    public RPCReturnType getUserChainMsgPRCWay(String chainId) {
+        return null;
+    }
+
+    @Override
+    public CommonReturnType getUserChainMsgLocally(String chainId) {
         return null;
     }
 
@@ -23,7 +30,7 @@ public class ChainMsgServiceImpl implements ChainMsgService {
     }
 
     @Override
-    public RPCReturnType removeChainMsgPRCWay(String chainNum) {
+    public RPCReturnType removeChainMsgPRCWay(String chainId) {
         return null;
     }
 }

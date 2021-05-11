@@ -1,12 +1,17 @@
 package com.controller;
 
+import com.constants.ChainConstants;
 import com.constants.UserConstants;
+import com.dataobject.ChainDO;
+import com.dataobject.UserDO;
 import com.dataobject.VisiterDO;
 import com.error.BusinessException;
 import com.error.UserError;
 import com.response.CommonReturnType;
 import com.response.RPCReturnType;
+import com.response.ReturnType;
 import com.service.CacheService;
+import com.service.ChainMsgService;
 import com.service.UserCheckinService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +23,8 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -35,6 +42,9 @@ public class UserController extends BaseController{
 
     @Autowired
     private HttpServletRequest httpServletRequest;
+
+    @Autowired
+    private ChainMsgService chainMsgService;
 
     //用户注册
     @RequestMapping(value = "/register", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
@@ -103,5 +113,93 @@ public class UserController extends BaseController{
         //        String newStr = base64Encoder.encode(md5.digest(str.getBytes("utf-8")));
         return newStr;
     }
+
+    @RequestMapping(value = "/getAllChainById", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
+    @ResponseBody
+    public CommonReturnType getAllChainMsgByUserId(@RequestParam(name = "userId") String userId) throws BusinessException {
+
+        //入参校验
+        if(StringUtils.isEmpty(userId)){
+            throw new BusinessException(UserError.PARAMETER_VALIDATION_ERROR);
+        }
+
+        //远程查询用户所有链id
+        List<String> chainIdList = chainMsgService.getAllChainMsgByUserId(userId);
+
+        return CommonReturnType.create(chainIdList);
+    }
+
+
+    @RequestMapping(value = "/getChainMsg", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
+    @ResponseBody
+    public CommonReturnType getChainMsgById(@RequestParam(name = "chainId") String chainId,
+                                            @RequestParam(name = "callMode") String callMode) throws BusinessException{
+
+        //入参校验
+        if(StringUtils.isEmpty(chainId) || StringUtils.isEmpty(callMode)){
+            throw new BusinessException(UserError.PARAMETER_VALIDATION_ERROR);
+        }
+
+        CommonReturnType result = null;
+        if (callMode.equals(ChainConstants.CHAIN_CALL_BY_RPC)) {
+            result = chainMsgService.getUserChainMsgPRCWay(chainId);
+        } else if (callMode.equals(ChainConstants.CHAIN_CALL_BY_LOCAL)) {
+            result = chainMsgService.getUserChainMsgLocally(chainId);
+        } else {
+            return CommonReturnType.create("链信息查询方式参数上传错误");
+        }
+
+        return CommonReturnType.create(result.getData());
+    }
+
+
+    @RequestMapping(value = "/addChain", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
+    @ResponseBody
+    public CommonReturnType addChain(@RequestParam(name = "chainId") String chainId,
+                                     @RequestParam(name = "serviceNum") int serviceNum,
+                                     @RequestParam(name = "updateUserId") String updateUserId,
+                                     @RequestParam(name = "addrMap") HashMap<Integer, String> addrMap) throws BusinessException {
+
+        //入参校验
+        if (StringUtils.isEmpty(chainId) || StringUtils.isEmpty(updateUserId)
+                || null == addrMap || serviceNum != addrMap.size()
+                || serviceNum > ChainConstants.CHAIN_SERVICE_NUM_LIMIT) {
+            throw new BusinessException(UserError.PARAMETER_VALIDATION_ERROR);
+        }
+
+        ChainDO chain = new ChainDO(chainId, serviceNum, updateUserId, addrMap);
+
+        RPCReturnType result = chainMsgService.addNewChainMsgPRCWay(chain);
+
+        //日志探针
+        if ("success".equals(result.getStatus())) {
+            return CommonReturnType.create("success");
+        } else {
+            return CommonReturnType.create(result.getData(), "远程调用RPC添加链信息失败");
+        }
+
+    }
+
+    @RequestMapping(value = "/deleteChain", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
+    @ResponseBody
+    public CommonReturnType deleteChain(@RequestParam(name = "chainId") String chainId) throws BusinessException {
+
+        //入参校验
+        if (StringUtils.isEmpty(chainId)) {
+            throw new BusinessException(UserError.PARAMETER_VALIDATION_ERROR);
+        }
+
+        RPCReturnType result = chainMsgService.removeChainMsgPRCWay(chainId);
+
+        //日志探针
+        if ("success".equals(result.getStatus())) {
+            return CommonReturnType.create("success");
+        } else {
+            return CommonReturnType.create(result.getData(), "远程调用RPC删除链信息失败");
+        }
+
+    }
+
+
 
 }
