@@ -1,12 +1,14 @@
 package com.controller;
 
 import com.constants.UserConstants;
+import com.dataobject.NodeMsgDO;
 import com.dataobject.VisiterDO;
 import com.error.BusinessException;
 import com.error.UserError;
 import com.response.CommonReturnType;
 import com.response.RPCReturnType;
 import com.service.CacheService;
+import com.service.NodeService;
 import com.service.UserCheckinService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,9 @@ public class AdminController extends BaseController{
 
     @Autowired
     private HttpServletRequest httpServletRequest;
+
+    @Autowired
+    private NodeService nodeService;
 
     //用户注册
     @RequestMapping(value = "/register", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
@@ -98,5 +103,24 @@ public class AdminController extends BaseController{
         // 加密字符串
         //        String newStr = base64Encoder.encode(md5.digest(str.getBytes("utf-8")));
         return newStr;
+    }
+
+    @RequestMapping(value = "/getNodeMsg4Admin", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
+    @ResponseBody
+    public CommonReturnType getNodeMsg(@RequestParam(name = "adminId") String adminId) throws BusinessException {
+
+        //入参校验
+        if(StringUtils.isEmpty(adminId)){
+            throw new BusinessException(UserError.PARAMETER_VALIDATION_ERROR);
+        }
+
+        NodeMsgDO result = nodeService.getNodeMsg4Admin(adminId);
+
+        if (null != result) {
+            return CommonReturnType.create(result);
+        } else {
+            return CommonReturnType.create(null, "查询本地节点返回值为空");
+        }
+
     }
 }

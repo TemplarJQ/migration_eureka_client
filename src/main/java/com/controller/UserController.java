@@ -3,6 +3,7 @@ package com.controller;
 import com.constants.ChainConstants;
 import com.constants.UserConstants;
 import com.dataobject.ChainDO;
+import com.dataobject.NodeMsgDO;
 import com.dataobject.UserDO;
 import com.dataobject.VisiterDO;
 import com.error.BusinessException;
@@ -12,6 +13,7 @@ import com.response.RPCReturnType;
 import com.response.ReturnType;
 import com.service.CacheService;
 import com.service.ChainMsgService;
+import com.service.NodeService;
 import com.service.UserCheckinService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +47,9 @@ public class UserController extends BaseController{
 
     @Autowired
     private ChainMsgService chainMsgService;
+
+    @Autowired
+    private NodeService nodeService;
 
     //用户注册
     @RequestMapping(value = "/register", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
@@ -200,6 +205,23 @@ public class UserController extends BaseController{
 
     }
 
+    @RequestMapping(value = "/getNodeMsg", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
+    @ResponseBody
+    public CommonReturnType getNodeMsg(@RequestParam(name = "userId") String userId) throws BusinessException {
 
+        //入参校验
+        if(StringUtils.isEmpty(userId)){
+            throw new BusinessException(UserError.PARAMETER_VALIDATION_ERROR);
+        }
+
+        NodeMsgDO result = nodeService.getNodeMsgByUserId(userId);
+
+        if (null != result) {
+            return CommonReturnType.create(result);
+        } else {
+            return CommonReturnType.create(null, "查询本地节点返回值为空");
+        }
+
+    }
 
 }
