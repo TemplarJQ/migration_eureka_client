@@ -4,9 +4,11 @@ import com.dataobject.ChainDO;
 import com.response.CommonReturnType;
 import com.response.RPCReturnType;
 import com.service.ChainMsgService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ChainMsgServiceImpl implements ChainMsgService {
 
     @Override
