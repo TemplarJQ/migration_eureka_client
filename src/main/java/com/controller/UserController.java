@@ -1,20 +1,14 @@
 package com.controller;
 
 import com.constants.ChainConstants;
+import com.constants.TaskConstants;
 import com.constants.UserConstants;
-import com.dataobject.ChainDO;
-import com.dataobject.NodeMsgDO;
-import com.dataobject.UserDO;
-import com.dataobject.VisiterDO;
+import com.dataobject.*;
 import com.error.BusinessException;
 import com.error.UserError;
 import com.response.CommonReturnType;
 import com.response.RPCReturnType;
-import com.response.ReturnType;
-import com.service.CacheService;
-import com.service.ChainMsgService;
-import com.service.NodeService;
-import com.service.UserCheckinService;
+import com.service.*;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -50,6 +44,12 @@ public class UserController extends BaseController{
 
     @Autowired
     private NodeService nodeService;
+
+    @Autowired
+    private UserTaskService userTaskService;
+
+    @Autowired
+    private ScheduledTaskService scheduledTaskService;
 
     //用户注册
     @RequestMapping(value = "/register", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
@@ -119,6 +119,7 @@ public class UserController extends BaseController{
         return newStr;
     }
 
+    //获取所有链ID
     @RequestMapping(value = "/getAllChainById", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
     public CommonReturnType getAllChainMsgByUserId(@RequestParam(name = "userId") String userId) throws BusinessException {
@@ -134,7 +135,7 @@ public class UserController extends BaseController{
         return CommonReturnType.create(chainIdList);
     }
 
-
+    //获取链信息
     @RequestMapping(value = "/getChainMsg", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
     public CommonReturnType getChainMsgById(@RequestParam(name = "chainId") String chainId,
@@ -157,7 +158,7 @@ public class UserController extends BaseController{
         return CommonReturnType.create(result.getData());
     }
 
-
+    //添加链信息
     @RequestMapping(value = "/addChain", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
     public CommonReturnType addChain(@RequestParam(name = "chainId") String chainId,
@@ -178,13 +179,14 @@ public class UserController extends BaseController{
 
         //日志探针
         if ("success".equals(result.getStatus())) {
-            return CommonReturnType.create("success");
+            return CommonReturnType.create(result.getData());
         } else {
             return CommonReturnType.create(result.getData(), "远程调用RPC添加链信息失败");
         }
 
     }
 
+    //删除链信息
     @RequestMapping(value = "/deleteChain", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
     public CommonReturnType deleteChain(@RequestParam(name = "chainId") String chainId) throws BusinessException {
@@ -198,13 +200,14 @@ public class UserController extends BaseController{
 
         //日志探针
         if ("success".equals(result.getStatus())) {
-            return CommonReturnType.create("success");
+            return CommonReturnType.create(result.getData());
         } else {
             return CommonReturnType.create(result.getData(), "远程调用RPC删除链信息失败");
         }
 
     }
 
+    //获取节点信息
     @RequestMapping(value = "/getNodeMsg", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
     public CommonReturnType getNodeMsg(@RequestParam(name = "userId") String userId) throws BusinessException {
@@ -224,4 +227,83 @@ public class UserController extends BaseController{
 
     }
 
+    //提交、运行链任务
+    @RequestMapping(value = "/startUsualTask", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
+    @ResponseBody
+    public CommonReturnType startUsualTask(@RequestParam(name = "userId") String userId,
+                                           @RequestParam(name = "chainId") String chainId,
+                                           @RequestParam(name = "resultAddr") String resultAddr,
+                                           @RequestParam(name = "otherMsg") String otherMsg) throws BusinessException {
+
+        //入参校验
+        if(StringUtils.isEmpty(userId) || StringUtils.isEmpty(chainId)
+                || StringUtils.isEmpty(resultAddr) || StringUtils.isEmpty(otherMsg)){
+            throw new BusinessException(UserError.PARAMETER_VALIDATION_ERROR);
+        }
+
+        TaskDO taskDO = new TaskDO(getUUID(), userId, chainId, TaskConstants.USUAL_TASK, resultAddr, otherMsg);
+
+        CommonReturnType result = userTaskService.starkUsualTask(taskDO);
+
+        //日志探针
+        if ("success".equals(result.getStatus())) {
+            return CommonReturnType.create(result.getData());
+        } else {
+            return CommonReturnType.create(result.getData(), "开启普通链式任务失败");
+        }
+    }
+
+    //获取任务执行信息
+    @RequestMapping(value = "/queryUsualTask", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
+    @ResponseBody
+    public CommonReturnType queryUsualTask(@RequestParam(name = "userId") String userId,
+                                           @RequestParam(name = "taskId") String taskId) throws BusinessException {
+        //入参校验
+        if(StringUtils.isEmpty(userId) || StringUtils.isEmpty(taskId)){
+            throw new BusinessException(UserError.PARAMETER_VALIDATION_ERROR);
+        }
+
+        CommonReturnType result = userTaskService.queryUsualTask(userId, taskId);
+
+        //日志探针
+        if ("success".equals(result.getStatus())) {
+            return CommonReturnType.create(result.getData());
+        } else {
+            return CommonReturnType.create(result.getData(), "查询已开启的链式任务失败");
+        }
+    }
+
+    public String getUUID() {
+        UUID uuid = UUID.randomUUID();
+        String str = uuid.toString();
+        return str.replace("-", "");
+    }
+
+
+    //提交计划任务表
+    @RequestMapping(value = "/uploadScheduledTask", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
+    @ResponseBody
+    public CommonReturnType uploadScheduledTask(@RequestParam(name = "userId") String userId,
+                                                @RequestParam(name = "chainId") String chainId,
+                                                @RequestParam(name = "resultAddr") String resultAddr,
+                                                @RequestParam(name = "otherMsg") String otherMsg,
+                                                @RequestParam(name = "scheduledMap") HashMap<String, String> scheduledMap) throws BusinessException {
+
+        //入参校验
+        if(StringUtils.isEmpty(userId) || StringUtils.isEmpty(chainId)
+                || StringUtils.isEmpty(resultAddr) || StringUtils.isEmpty(otherMsg) || null == scheduledMap){
+            throw new BusinessException(UserError.PARAMETER_VALIDATION_ERROR);
+        }
+
+        ScheduledTaskDO staskDO = new ScheduledTaskDO(getUUID(), userId, chainId, TaskConstants.USUAL_TASK, resultAddr, otherMsg, scheduledMap);
+
+        CommonReturnType result = scheduledTaskService.uploadScheduledTask(staskDO);
+
+        //日志探针
+        if ("success".equals(result.getStatus())) {
+            return CommonReturnType.create(result.getData());
+        } else {
+            return CommonReturnType.create(result.getData(), "上传计划任务到中心节点");
+        }
+    }
 }

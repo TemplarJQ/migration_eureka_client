@@ -4,7 +4,7 @@ public class TaskDO {
 
     private String taskId;
 
-    private Integer ownerId;
+    private String ownerId;
 
     private String chainId;
 
@@ -22,11 +22,11 @@ public class TaskDO {
         this.taskId = taskId;
     }
 
-    public Integer getOwnerId() {
+    public String getOwnerId() {
         return ownerId;
     }
 
-    public void setOwnerId(Integer ownerId) {
+    public void setOwnerId(String ownerId) {
         this.ownerId = ownerId;
     }
 
@@ -62,17 +62,15 @@ public class TaskDO {
         this.otherMsg = otherMsg;
     }
 
-    public TaskDO(String taskId,
-                  Integer ownerId,
-                  String chainId,
-                  Integer taskType,
-                  String resultAddr,
-                  String otherMsg) {
+    public TaskDO(String taskId, String ownerId, String chainId, Integer taskType, String resultAddr, String otherMsg) {
         this.taskId = taskId;
         this.ownerId = ownerId;
         this.chainId = chainId;
         this.taskType = taskType;
         this.resultAddr = resultAddr;
         this.otherMsg = otherMsg;
+    }
+
+    public TaskDO() {
     }
 }
