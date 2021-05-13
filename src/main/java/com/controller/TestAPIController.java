@@ -23,8 +23,8 @@ public class TestAPIController extends BaseController{
     //hello
     @RequestMapping(value = "/hello", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
-    public CommonReturnType helloTest(String userID) {
-        return CommonReturnType.create(userID + ", hello!");
+    public String helloTest() {
+        return "hello, world!";
     }
 
     //节点信息

@@ -62,6 +62,13 @@
           <scope>test</scope>
       </dependency>
 
+      <!--加入ribbon消费服务-->
+
+      <dependency>
+          <groupId>org.springframework.cloud</groupId>
+          <artifactId>spring-cloud-starter-ribbon</artifactId>
+      </dependency>
+
       <!-- https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk -->
       <dependency>
           <groupId>com.amazonaws</groupId>
