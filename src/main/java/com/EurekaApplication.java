@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 /**
- * Hello world!
+ * 用户端启动APP
  *
  */
 
@@ -16,6 +16,6 @@ public class EurekaApplication
     public static void main( String[] args )
     {
         SpringApplication.run(EurekaApplication.class, args);
-        System.out.println( "Hello World!" );
+        System.out.println( "服务迁移系统多节点用户端启动!" );
     }
 }

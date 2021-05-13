@@ -52,7 +52,7 @@ public class UserController extends BaseController{
     private ScheduledTaskService scheduledTaskService;
 
     //用户注册
-    @RequestMapping(value = "/register", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
+    @RequestMapping(value = "/register", method = {RequestMethod.POST})
     @ResponseBody
     public CommonReturnType userRegister(@RequestParam(name = "userName") String userName,
                                          @RequestParam(name = "registerMode") String registerMode,
@@ -76,7 +76,7 @@ public class UserController extends BaseController{
     }
 
     //用户接入
-    @RequestMapping(value = "/login", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
+    @RequestMapping(value = "/login", method = {RequestMethod.POST})
     @ResponseBody
     public CommonReturnType userLogin(@RequestParam(name = "userId") String userId,
                                       @RequestParam(name = "password") String password) throws BusinessException, UnsupportedEncodingException, NoSuchAlgorithmException {
@@ -120,7 +120,7 @@ public class UserController extends BaseController{
     }
 
     //获取所有链ID
-    @RequestMapping(value = "/getAllChainById", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
+    @RequestMapping(value = "/getAllChainById", method = {RequestMethod.POST})
     @ResponseBody
     public CommonReturnType getAllChainMsgByUserId(@RequestParam(name = "userId") String userId) throws BusinessException {
 
@@ -136,7 +136,7 @@ public class UserController extends BaseController{
     }
 
     //获取链信息
-    @RequestMapping(value = "/getChainMsg", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
+    @RequestMapping(value = "/getChainMsg", method = {RequestMethod.POST})
     @ResponseBody
     public CommonReturnType getChainMsgById(@RequestParam(name = "chainId") String chainId,
                                             @RequestParam(name = "callMode") String callMode) throws BusinessException{
@@ -159,7 +159,7 @@ public class UserController extends BaseController{
     }
 
     //添加链信息
-    @RequestMapping(value = "/addChain", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
+    @RequestMapping(value = "/addChain", method = {RequestMethod.POST})
     @ResponseBody
     public CommonReturnType addChain(@RequestParam(name = "chainId") String chainId,
                                      @RequestParam(name = "serviceNum") int serviceNum,
@@ -187,7 +187,7 @@ public class UserController extends BaseController{
     }
 
     //删除链信息
-    @RequestMapping(value = "/deleteChain", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
+    @RequestMapping(value = "/deleteChain", method = {RequestMethod.POST})
     @ResponseBody
     public CommonReturnType deleteChain(@RequestParam(name = "chainId") String chainId) throws BusinessException {
 
@@ -208,7 +208,7 @@ public class UserController extends BaseController{
     }
 
     //获取节点信息
-    @RequestMapping(value = "/getNodeMsg", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
+    @RequestMapping(value = "/getNodeMsg", method = {RequestMethod.POST})
     @ResponseBody
     public CommonReturnType getNodeMsg(@RequestParam(name = "userId") String userId) throws BusinessException {
 
@@ -228,7 +228,7 @@ public class UserController extends BaseController{
     }
 
     //提交、运行链任务
-    @RequestMapping(value = "/startUsualTask", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
+    @RequestMapping(value = "/startUsualTask", method = {RequestMethod.POST})
     @ResponseBody
     public CommonReturnType startUsualTask(@RequestParam(name = "userId") String userId,
                                            @RequestParam(name = "chainId") String chainId,
@@ -254,7 +254,7 @@ public class UserController extends BaseController{
     }
 
     //获取任务执行信息
-    @RequestMapping(value = "/queryUsualTask", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
+    @RequestMapping(value = "/queryUsualTask", method = {RequestMethod.POST})
     @ResponseBody
     public CommonReturnType queryUsualTask(@RequestParam(name = "userId") String userId,
                                            @RequestParam(name = "taskId") String taskId) throws BusinessException {
@@ -281,7 +281,7 @@ public class UserController extends BaseController{
 
 
     //提交计划任务表
-    @RequestMapping(value = "/uploadScheduledTask", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
+    @RequestMapping(value = "/uploadScheduledTask", method = {RequestMethod.POST})
     @ResponseBody
     public CommonReturnType uploadScheduledTask(@RequestParam(name = "userId") String userId,
                                                 @RequestParam(name = "chainId") String chainId,
