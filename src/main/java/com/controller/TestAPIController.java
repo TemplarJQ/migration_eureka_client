@@ -1,15 +1,16 @@
 package com.controller;
 
 
-import com.response.CommonReturnType;
+import com.response.RPCReturnType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller("test")
 @RequestMapping("/test")
@@ -30,8 +31,17 @@ public class TestAPIController extends BaseController{
     //节点信息
     @RequestMapping(value = "/discoveryClient", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
-    public CommonReturnType discoveryClientTest() {
+    public RPCReturnType discoveryClientTest() {
         ServiceInstance instance = discoveryClient.getLocalServiceInstance();
-        return CommonReturnType.create("hello,client: " + instance.getHost() + ", serviceID: " + instance.getServiceId());
+        return RPCReturnType.create("hello,client: " + instance.getHost() + ", serviceID: " + instance.getServiceId());
     }
+
+    //测试有参数发送
+    @RequestMapping(value = "/paramTest", method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    public RPCReturnType paramTest(String name) {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        return RPCReturnType.create("hello: " + request.getRequestURI() + ", name: " + name);
+    }
+
 }
