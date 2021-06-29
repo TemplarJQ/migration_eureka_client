@@ -2,23 +2,23 @@ package com.dataobject;
 
 public class UserDO {
 
-    private String userId;
+    private Integer userId;
 
     private String userName;
 
     private String registerMode;
 
-    private Integer user_level;
+    private Integer userLevel;
 
     private String thirdPartyId;
 
     private String encrptPassword;
 
-    public String getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
@@ -39,20 +39,24 @@ public class UserDO {
     }
 
     public Integer getUser_level() {
-        return user_level;
+        return userLevel;
     }
 
-    public UserDO(String userId, String userName, String registerMode, Integer user_level, String thirdPartyId, String encrptPassword) {
+    public Integer getUserLevel() {
+        return userLevel;
+    }
+
+    public void setUserLevel(Integer userLevel) {
+        this.userLevel = userLevel;
+    }
+
+    public UserDO(Integer userId, String userName, String registerMode, Integer userLevel, String thirdPartyId, String encrptPassword) {
         this.userId = userId;
         this.userName = userName;
         this.registerMode = registerMode;
-        this.user_level = user_level;
+        this.userLevel = userLevel;
         this.thirdPartyId = thirdPartyId;
         this.encrptPassword = encrptPassword;
-    }
-
-    public void setUser_level(Integer user_level) {
-        this.user_level = user_level;
     }
 
     public String getThirdPartyId() {

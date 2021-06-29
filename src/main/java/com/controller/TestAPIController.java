@@ -29,12 +29,12 @@ public class TestAPIController extends BaseController{
     }
 
     //节点信息
-    @RequestMapping(value = "/discoveryClient", method = {RequestMethod.POST, RequestMethod.GET})
-    @ResponseBody
-    public RPCReturnType discoveryClientTest() {
-        ServiceInstance instance = discoveryClient.getLocalServiceInstance();
-        return RPCReturnType.create("hello,client: " + instance.getHost() + ", serviceID: " + instance.getServiceId());
-    }
+//    @RequestMapping(value = "/discoveryClient", method = {RequestMethod.POST, RequestMethod.GET})
+//    @ResponseBody
+//    public RPCReturnType discoveryClientTest() {
+//        ServiceInstance instance = discoveryClient.
+//        return RPCReturnType.create("hello,client: " + instance.getHost() + ", serviceID: " + instance.getServiceId());
+//    }
 
     //测试有参数发送
     @RequestMapping(value = "/paramTest", method = {RequestMethod.POST, RequestMethod.GET})
