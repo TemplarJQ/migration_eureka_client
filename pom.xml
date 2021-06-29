@@ -6,7 +6,7 @@
 
   <groupId>com.migration</groupId>
   <artifactId>migration_eureka_client</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>37.0-SNAPSHOT</version>
 
   <name>migration_eureka_client</name>
   <!-- FIXME change it to the project's website -->
