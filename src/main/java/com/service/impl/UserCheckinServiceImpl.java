@@ -11,6 +11,8 @@ public class UserCheckinServiceImpl implements UserCheckinService {
 
     @Override
     public RPCReturnType userRegister(VisiterDO visiterDO) {
+        //调用远端RPC
+
         return null;
     }
 

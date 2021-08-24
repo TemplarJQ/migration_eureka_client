@@ -163,11 +163,11 @@ public class UserController extends BaseController{
     @ResponseBody
     public CommonReturnType addChain(@RequestParam(name = "chainId") String chainId,
                                      @RequestParam(name = "serviceNum") int serviceNum,
-                                     @RequestParam(name = "updateUserId") String updateUserId,
+                                     @RequestParam(name = "updateUserId") Integer updateUserId,
                                      @RequestParam(name = "addrMap") HashMap<Integer, String> addrMap) throws BusinessException {
 
         //入参校验
-        if (StringUtils.isEmpty(chainId) || StringUtils.isEmpty(updateUserId)
+        if (StringUtils.isEmpty(chainId) || updateUserId != 0
                 || null == addrMap || serviceNum != addrMap.size()
                 || serviceNum > ChainConstants.CHAIN_SERVICE_NUM_LIMIT) {
             throw new BusinessException(UserError.PARAMETER_VALIDATION_ERROR);
