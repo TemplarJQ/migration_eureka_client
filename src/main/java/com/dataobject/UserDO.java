@@ -77,4 +77,9 @@ public class UserDO {
 
     public UserDO() {
     }
+
+    @Override
+    public String toString() {
+        return "UserDO[id=" + userId + ", name=" + userName + ", mode=" + registerMode + "]";
+    }
 }

@@ -6,7 +6,7 @@ public class VisiterDO {
 
     private String registerMode;
 
-    private Integer user_level;
+    private Byte user_level;
 
     private String encrptPassword;
 
@@ -26,11 +26,11 @@ public class VisiterDO {
         this.registerMode = registerMode;
     }
 
-    public Integer getUser_level() {
+    public Byte getUser_level() {
         return user_level;
     }
 
-    public void setUser_level(Integer user_level) {
+    public void setUser_level(Byte user_level) {
         this.user_level = user_level;
     }
 
@@ -42,7 +42,7 @@ public class VisiterDO {
         this.encrptPassword = encrptPassword;
     }
 
-    public VisiterDO(String userName, String registerMode, Integer user_level, String encrptPassword) {
+    public VisiterDO(String userName, String registerMode, Byte user_level, String encrptPassword) {
         this.userName = userName;
         this.registerMode = registerMode;
         this.user_level = user_level;

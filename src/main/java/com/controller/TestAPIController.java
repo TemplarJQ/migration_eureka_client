@@ -1,6 +1,8 @@
 package com.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
+import com.dataobject.UserDO;
 import com.response.RPCReturnType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
@@ -42,6 +44,15 @@ public class TestAPIController extends BaseController{
     public RPCReturnType paramTest(String name) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         return RPCReturnType.create("hello: " + request.getRequestURI() + ", name: " + name);
+    }
+
+    //测试类发送模式
+    @RequestMapping(value = "/ObjectTest", method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    public RPCReturnType ObjectTest(@RequestBody String jsonString) {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        UserDO userDO = JSONObject.parseObject(jsonString, UserDO.class);
+        return RPCReturnType.create("hello: " + request.getRequestURI() + ", userDO: " + userDO.toString());
     }
 
 }

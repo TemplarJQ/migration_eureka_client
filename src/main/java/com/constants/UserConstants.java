@@ -3,10 +3,10 @@ package com.constants;
 public class UserConstants {
 
     //用户等级设置
-    public static final int ORIGINAL = 0;
-    public static final int VIP_HIGHEST = 30;
+    public static final Byte ORIGINAL = 0;
+    public static final Byte VIP_HIGHEST = 30;
     //管理员等级设置
-    public static final int ADMIN = 100;
+    public static final Byte ADMIN = 100;
 
     public static int levelUp(int level, int offset) {
         int tmp = level + offset;

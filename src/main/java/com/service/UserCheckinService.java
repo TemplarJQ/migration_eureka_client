@@ -6,11 +6,11 @@ import com.response.RPCReturnType;
 
 public interface UserCheckinService {
 
-    RPCReturnType userRegister(VisiterDO visiterDO);
+    CommonReturnType userRegister(VisiterDO visiterDO);
 
     CommonReturnType userCheckinLocally(String userId, String password);
 
-    RPCReturnType userCheckinRPCWay(String userId, String password);
+    CommonReturnType userCheckinRPCWay(String userId, String password);
 
     RPCReturnType adminRegister(VisiterDO visiterDO);
 

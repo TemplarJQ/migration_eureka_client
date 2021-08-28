@@ -52,7 +52,7 @@ public class UserController extends BaseController{
     private ScheduledTaskService scheduledTaskService;
 
     //用户注册
-    @RequestMapping(value = "/register", method = {RequestMethod.POST})
+    @RequestMapping(value = "/register", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public CommonReturnType userRegister(@RequestParam(name = "userName") String userName,
                                          @RequestParam(name = "registerMode") String registerMode,
@@ -69,14 +69,14 @@ public class UserController extends BaseController{
         VisiterDO visiter = new VisiterDO(userName, UserConstants.getRegisterMode(registerMode), UserConstants.ORIGINAL, password);
 
         //向注册中心发RPC请求注册用户,失败则抛全局异常并注明RPC错误
-        RPCReturnType result = userCheckinService.userRegister(visiter);
+        CommonReturnType result = userCheckinService.userRegister(visiter);
 
         if (result.getStatus().equals("success")) return CommonReturnType.create(result.getData());
         else return CommonReturnType.create(result.getData(), "fail");
     }
 
     //用户接入
-    @RequestMapping(value = "/login", method = {RequestMethod.POST})
+    @RequestMapping(value = "/login", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public CommonReturnType userLogin(@RequestParam(name = "userId") String userId,
                                       @RequestParam(name = "password") String password) throws BusinessException, UnsupportedEncodingException, NoSuchAlgorithmException {
@@ -89,13 +89,13 @@ public class UserController extends BaseController{
         //TODO：redis全局黑名单检测
 
         //远程RPC校验
-        RPCReturnType result = userCheckinService.userCheckinRPCWay(userId, this.enCodeByMD5(password));
+        CommonReturnType result = userCheckinService.userCheckinRPCWay(userId, this.enCodeByMD5(password));
         //名单校验失败
         if (!"success".equals(result.getStatus())) return CommonReturnType.create(result.getData(), "fail");
 
         //将登陆凭证加入到用户登陆成功的session中
         this.httpServletRequest.getSession().setAttribute("IS_LOGIN",true);
-        this.httpServletRequest.getSession().setAttribute("LOGIN_USER",result.getData());
+        this.httpServletRequest.getSession().setAttribute("LOGIN_USER", result.getData());
 
         //生成登录凭证,UUID
         String uuidToken = UUID.randomUUID().toString();
